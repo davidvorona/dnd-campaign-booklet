@@ -1,19 +1,24 @@
-import process from "process";
 import React from "react";
+import {
+    Switch,
+    Route,
+    Redirect,
+    Router
+} from "react-router-dom";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const versions: any = {};
-for (const dependency of ["chrome", "node", "electron"]) {
-    versions[dependency] = process.versions[dependency];
-}
+import history from "./services/history";
 
-export default function App(): JSX.Element {
+import WelcomeScreen from "./screens/welcome_screen";
+
+export default function(): JSX.Element {
     return (
-        <div>
-            <h1>Hello World!</h1>
-            We are using Node.js<span id="node-version">{versions.node}</span>,
-            Chromium <span id="chrome-version">{versions.chrome}</span>,
-            and Electron <span id="electron-version">{versions.electron}</span>.
-        </div>
+        <Router history={history}>
+            <Switch>
+                <Route exact path="/">
+                    <WelcomeScreen />
+                </Route>
+                <Redirect to="/" />
+            </Switch>
+        </Router>
     );
 }

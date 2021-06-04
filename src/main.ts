@@ -3,14 +3,15 @@ import { app, BrowserWindow } from "electron";
 
 function createWindow() {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1200,
+        height: 800,
+        autoHideMenuBar: true,
         webPreferences: {
-            // resolves to index.tsx/js file
-            preload: path.join(__dirname, "")
+            nodeIntegration: true,
+            contextIsolation: false
         }
     });
-    win.loadFile("./static/index.html");
+    win.loadFile(path.resolve(__dirname, "index.html"));
 }
 
 app.whenReady().then(() => {
