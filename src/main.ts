@@ -2,6 +2,8 @@ import path from "path";
 import { app, BrowserWindow } from "electron";
 import "./store/init";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 function createWindow() {
     const win = new BrowserWindow({
         width: 1200,
@@ -12,7 +14,12 @@ function createWindow() {
             contextIsolation: false
         }
     });
-    win.loadFile(path.resolve(__dirname, "index.html"));
+
+    if(isDevelopment) {
+        win.loadURL("http://localhost:8080");
+    } else {
+        win.loadFile(path.resolve(__dirname, "index.html"));
+    }
 }
 
 app.whenReady().then(() => {

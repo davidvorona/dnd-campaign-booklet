@@ -19,6 +19,18 @@ const styles = {
     titleContainer: {
         marginTop: "15%",
     },
+    newSettingWrapper: {
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    newSettingInput: {
+        borderStyle: "none",
+        background: "rgba(255,255,255,0.5)",
+        outline: "none",
+        borderRadius: 4,
+        padding: 10,
+        fontSize: 24
+    },
     bottomRightText: {
         bottom: 0,
         right: 0,

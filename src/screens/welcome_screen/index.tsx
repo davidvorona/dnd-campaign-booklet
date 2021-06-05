@@ -17,6 +17,13 @@ const WelcomeScreen = (): JSX.Element => (
         <div style={styles.titleContainer}>
             <h1 className="title">DnD Campaign Booklet</h1>
         </div>
+        <div className="flex-column" style={styles.newSettingWrapper}>
+            <input
+                id="new-setting-input"
+                style={styles.newSettingInput}
+                placeholder="Create a setting..."
+            />
+        </div>
         <div className="absolute flex-row" style={styles.bottomRightText}>
             <span>{versionText}</span>
         </div>
