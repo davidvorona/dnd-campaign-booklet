@@ -19,12 +19,13 @@
     outline: none;
     border-radius: 4px;
     padding: 10px;
-    font-size: 24px;
+    font-size: 22px;
 }
 
 #new-setting-input::placeholder {
     font-weight: lighter;
     font-style: italic;
+    font-size: 18px;
 }
 
 #bottom-right-text {
