@@ -27,17 +27,22 @@ class Store {
         this.data = parseDataFile(this.path, { ...args.defaults });
     }
 
-    get(key: string | number): unknown {
-        let keyStr = key;
+    static stringifyKey(key: string | number): string {
         if (typeof key === "number") {
-            keyStr = keyStr.toString();
+            return key.toString();
         }
+        return key;
+    }
+
+    get(key: string | number): unknown {
+        const keyStr = Store.stringifyKey(key);
         return this.data[keyStr];
     }
 
     set(key: string | number, val: unknown): void {
+        const keyStr = Store.stringifyKey(key);
         try {
-            this.data[key] = val;
+            this.data[keyStr] = val;
             fs.writeFileSync(this.path, JSON.stringify(this.data));
         } catch (err) {
             console.log(err);
