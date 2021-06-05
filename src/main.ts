@@ -1,5 +1,6 @@
 import path from "path";
 import { app, BrowserWindow } from "electron";
+import "./store/init";
 
 function createWindow() {
     const win = new BrowserWindow({

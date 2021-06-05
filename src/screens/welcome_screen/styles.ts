@@ -22,6 +22,8 @@ const styles = {
     bottomRightText: {
         bottom: 0,
         right: 0,
+        paddingBottom: 10,
+        paddingRight: 10,
         alignItems: "center"
     }
 };

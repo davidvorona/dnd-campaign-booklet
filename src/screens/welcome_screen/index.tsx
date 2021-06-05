@@ -9,15 +9,16 @@ for (const dependency of ["chrome", "node", "electron"]) {
     versions[dependency] = process.versions[dependency];
 }
 
+const versionText = `Powered by Node.js ${versions.node},
+Chromium ${versions.chrome}, and Electron ${versions.electron}.`;
+
 const WelcomeScreen = (): JSX.Element => (
     <Screen style={styles.screenBackground}>
         <div style={styles.titleContainer}>
             <h1 className="title">DnD Campaign Booklet</h1>
         </div>
         <div className="absolute flex-row" style={styles.bottomRightText}>
-            We are using Node.js <span id="node-version">{versions.node}</span>,
-            Chromium <span id="chrome-version">{versions.chrome}</span>,
-            and Electron <span id="electron-version">{versions.electron}</span>.
+            <span>{versionText}</span>
         </div>
     </Screen>
 );
