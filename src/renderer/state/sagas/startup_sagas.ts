@@ -1,25 +1,29 @@
 import { AnyAction } from "@reduxjs/toolkit";
 import { put, takeLatest, StrictEffect, ForkEffect, take } from "redux-saga/effects";
-import startupActions from "../redux/startup_redux";
+import StartupActions from "../redux/startup_redux";
 import settingsActions from "../redux/settings_redux";
 
 function* startup(): Generator<StrictEffect,void,AnyAction> {
-    const FIRST_SETTING_ID = 0;
-    yield put(settingsActions.loadSetting(FIRST_SETTING_ID));
-    const result = yield take([
-        settingsActions.loadSettingSuccess.type,
-        settingsActions.loadSettingFailure.type
-    ]);
-    if (result.type === settingsActions.loadSettingSuccess.type) {
-        alert("Successfully loaded setting.");
-        yield put(startupActions.setStartupComplete());
-    } else {
-        alert("Failed to load setting.");
+    try {
+        const FIRST_SETTING_ID = 0;
+        yield put(settingsActions.loadSetting(FIRST_SETTING_ID));
+        const result = yield take([
+            settingsActions.loadSettingSuccess.type,
+            settingsActions.loadSettingFailure.type
+        ]);
+        if (result.type === settingsActions.loadSettingSuccess.type) {
+            yield put(StartupActions.startupSuccess());
+        } else {
+            yield put(StartupActions.startupFailure());
+        }
+    } catch (err) {
+        console.error(err);
+        yield put(StartupActions.startupFailure());
     }
 }
 
 export default function startupSagas(): ForkEffect[] {
     return [
-        takeLatest(startupActions.startup.type, startup)
+        takeLatest(StartupActions.startup.type, startup)
     ];
 }

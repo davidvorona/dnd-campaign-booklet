@@ -19,8 +19,12 @@ export const startupSlice = createSlice({
         startup(state) {
             state.isStartingUp = true;
         },
-        setStartupComplete(state) {
+        startupSuccess(state) {
+            state.isStartingUp = false;
             state.isComplete = true;
+        },
+        startupFailure(state) {
+            state.isStartingUp = false;
         }
     }
 });

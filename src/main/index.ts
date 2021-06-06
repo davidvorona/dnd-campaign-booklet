@@ -1,5 +1,9 @@
 import path from "path";
 import { app, BrowserWindow } from "electron";
+import installExtension, {
+    REACT_DEVELOPER_TOOLS,
+    REDUX_DEVTOOLS
+} from "electron-devtools-installer";
 import "./storage/init";
 
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -19,6 +23,7 @@ async function createWindow() {
         win.loadURL("http://localhost:8080").catch((err) => {
             console.log(err);
             if (err.code === "ERR_CONNECTION_REFUSED") {
+                console.info("Connection to dev server failed, using static file...");
                 win.loadFile(path.resolve(__dirname, "index.html"));
             }
         });
@@ -28,16 +33,31 @@ async function createWindow() {
 }
 
 app.whenReady().then(async () => {
-    await createWindow();
+    try {
+        await createWindow();
 
-    app.on("activate", function () {
-        // macOS apps generally continue running even without any
-        // windows open, and activating the app when no windows
-        // are available should open a new one
-        if (!BrowserWindow.getAllWindows().length) {
-            createWindow();
+        if (isDevelopment) {
+            // these options fix issue with extensions
+            const fixOpts = { loadExtensionOptions: { allowFileAccess: true } };
+            const extensions = await Promise.all([
+                installExtension(REDUX_DEVTOOLS, fixOpts),
+                installExtension(REACT_DEVELOPER_TOOLS, fixOpts)
+            ]);
+            console.log(`Loaded extensions: ${extensions.join(", ")}`);
         }
-    });
+
+        app.on("activate", function () {
+            // macOS apps generally continue running even without any
+            // windows open, and activating the app when no windows
+            // are available should open a new one
+            if (!BrowserWindow.getAllWindows().length) {
+                createWindow();
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        app.quit();
+    }
 });
 
 // On Windows and Linux, exiting all windows generally

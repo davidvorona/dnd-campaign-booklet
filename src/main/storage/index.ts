@@ -40,7 +40,7 @@ class Storage {
         return this.data[keyStr];
     };
 
-    set(key: string | number, val: unknown): void {
+    set = (key: string | number, val: unknown): void => {
         const keyStr = Storage.stringifyKey(key);
         try {
             this.data[keyStr] = val;
@@ -48,7 +48,7 @@ class Storage {
         } catch (err) {
             console.log(err);
         }
-    }
+    };
 }
 
 function parseDataFile(path: string, defaults?: StorageDefaults) {
