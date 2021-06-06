@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     mode: "development",
-    entry: "./src/index.tsx",
+    entry: "./src/renderer",
     target: "electron-renderer",
     devtool: "source-map",
     devServer: {
@@ -17,7 +17,8 @@ module.exports = {
             {
                 test: /\.ts(x?)$/,
                 use: "ts-loader",
-                include: /src/
+                include: /src/,
+                exclude: /src\/main/
             },
             {
                 test: /\.css$/i,

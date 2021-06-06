@@ -4,24 +4,22 @@ import electron from "electron";
 
 const USER_DATA_DIR = "userData";
 
-type DataObject = {
-    [key: string]: unknown
-};
+type DataObject = Record<string,unknown>;
 
-type StoreDefaults = DataObject | DataObject[];
+type StorageDefaults = DataObject | DataObject[];
 
-interface StoreArgs {
+interface StorageArgs {
     fileName: string,
-    defaults: StoreDefaults
+    defaults: StorageDefaults
 }
 
-class Store {
+class Storage {
     path: string;
 
     data: DataObject;
 
-    constructor(args: StoreArgs) {
-        const userDataPath = (electron.app || electron.remote.app).getPath(USER_DATA_DIR);
+    constructor(args: StorageArgs) {
+        const userDataPath = electron.app.getPath(USER_DATA_DIR);
         this.path = path.join(userDataPath, `${args.fileName}.json`);
         // must spread here to convert array to key-value object
         this.data = parseDataFile(this.path, { ...args.defaults });
@@ -34,13 +32,16 @@ class Store {
         return key;
     }
 
-    get(key: string | number): unknown {
-        const keyStr = Store.stringifyKey(key);
+    get = (key?: string | number): unknown => {
+        if (!key && key !== 0) {
+            return this.data;
+        }
+        const keyStr = Storage.stringifyKey(key);
         return this.data[keyStr];
-    }
+    };
 
     set(key: string | number, val: unknown): void {
-        const keyStr = Store.stringifyKey(key);
+        const keyStr = Storage.stringifyKey(key);
         try {
             this.data[keyStr] = val;
             fs.writeFileSync(this.path, JSON.stringify(this.data));
@@ -50,7 +51,7 @@ class Store {
     }
 }
 
-function parseDataFile(path: string, defaults?: StoreDefaults) {
+function parseDataFile(path: string, defaults?: StorageDefaults) {
     try {
         let jsonData;
         try {
@@ -66,4 +67,4 @@ function parseDataFile(path: string, defaults?: StoreDefaults) {
     }
 }
 
-export default Store;
+export default Storage;

@@ -3,13 +3,14 @@ const path = require("path");
 
 module.exports = {
     mode: "development",
-    entry: "./src/main.ts",
+    entry: "./src/main",
     target: "electron-main",
     module: {
         rules: [{
             test: /\.ts$/,
             use: "ts-loader",
-            include: /src/
+            include: /src/,
+            exclude: /src\/renderer/
         }]
     },
     resolve: {

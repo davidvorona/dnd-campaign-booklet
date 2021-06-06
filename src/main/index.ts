@@ -1,6 +1,6 @@
 import path from "path";
 import { app, BrowserWindow } from "electron";
-import "./store/init";
+import "./storage/init";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 

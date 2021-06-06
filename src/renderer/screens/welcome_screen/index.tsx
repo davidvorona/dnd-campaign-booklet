@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import process from "process";
 import Screen from "../../components/screen";
-import background1 from "../../../assets/images/FantasyBackground1.jpg";
-import background2 from "../../../assets/images/FantasyBackground2.jpg";
-import background3 from "../../../assets/images/FantasyBackground3.jpg";
-import background4 from "../../../assets/images/FantasyBackground4.jpg";
+import background1 from "../../../../assets/images/FantasyBackground1.jpg";
+import background2 from "../../../../assets/images/FantasyBackground2.jpg";
+import background3 from "../../../../assets/images/FantasyBackground3.jpg";
+import background4 from "../../../../assets/images/FantasyBackground4.jpg";
 import "./styles.css";
 
 function pickBackground() {
