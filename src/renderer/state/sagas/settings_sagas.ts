@@ -6,7 +6,6 @@ import settingsActions from "../redux/settings_redux";
 function* loadSetting(action: PayloadAction<number>): Generator<StrictEffect,void,dnd.Setting> {
     const id = action.payload;
     const setting = yield call(storage.getSetting, id);
-    console.log(setting);
     yield put(settingsActions.loadSettingSuccess(setting));
 }
 
