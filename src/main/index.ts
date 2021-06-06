@@ -4,7 +4,7 @@ import "./storage/init";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
-function createWindow() {
+async function createWindow() {
     const win = new BrowserWindow({
         width: 1200,
         height: 800,
@@ -16,14 +16,19 @@ function createWindow() {
     });
 
     if(isDevelopment) {
-        win.loadURL("http://localhost:8080");
+        win.loadURL("http://localhost:8080").catch((err) => {
+            console.log(err);
+            if (err.code === "ERR_CONNECTION_REFUSED") {
+                win.loadFile(path.resolve(__dirname, "index.html"));
+            }
+        });
     } else {
         win.loadFile(path.resolve(__dirname, "index.html"));
     }
 }
 
-app.whenReady().then(() => {
-    createWindow();
+app.whenReady().then(async () => {
+    await createWindow();
 
     app.on("activate", function () {
         // macOS apps generally continue running even without any
