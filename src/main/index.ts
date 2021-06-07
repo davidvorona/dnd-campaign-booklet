@@ -21,10 +21,12 @@ async function createWindow() {
 
     if(isDevelopment) {
         win.loadURL("http://localhost:8080").catch((err) => {
-            console.log(err);
             if (err.code === "ERR_CONNECTION_REFUSED") {
-                console.info("Connection to dev server failed, using static file...");
-                win.loadFile(path.resolve(__dirname, "index.html"));
+                const indexFilePath = path.resolve(__dirname, "index.html");
+                console.log(`Using '${indexFilePath}'`);
+                win.loadFile(indexFilePath);
+            } else {
+                console.error(err);
             }
         });
     } else {

@@ -7,7 +7,7 @@ const IPCStorageInterface = {
             const result = await ipcRenderer.invoke(IPC_CHANNELS.GET_SETTING, id);
             return result;
         } catch (err) {
-            console.log(err);
+            console.error(err);
             throw err;
         }
     }

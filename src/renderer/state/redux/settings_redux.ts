@@ -45,7 +45,8 @@ export const settingsSlice = createSlice({
 
 const current = (state: RootState): SettingsState => state.settings as SettingsState;
 export const selectors = {
-    getValue: (state: RootState): number => current(state).value
+    getValue: (state: RootState): number => current(state).value,
+    getCurrentSetting: (state: RootState): dnd.Setting => current(state).currentSetting
 };
 
 export const reducer = settingsSlice.reducer;

@@ -13,6 +13,11 @@
     align-items: center;
 }
 
+#current-setting-wrapper {
+    justify-content: center;
+    align-items: center;
+}
+
 #new-setting-input {
     border-style: none;
     background: rgba(255,255,255,0.5);

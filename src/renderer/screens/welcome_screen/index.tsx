@@ -1,15 +1,22 @@
 import React, { Component } from "react";
+import { connect, ConnectedProps } from "react-redux";
 import process from "process";
+import { RootState } from "../../state/store";
 import Screen from "../../components/screen";
+import WaitForStartup from "../../containers/wait_for_startup";
+import { selectors as settingsSelectors } from "../../state/redux/settings_redux";
 import background1 from "../../../../assets/images/FantasyBackground1.jpg";
 import background2 from "../../../../assets/images/FantasyBackground2.jpg";
 import background3 from "../../../../assets/images/FantasyBackground3.jpg";
 import background4 from "../../../../assets/images/FantasyBackground4.jpg";
 import "./styles.css";
 
+/** Helpers */
+const isDevelopment = process.env.NODE_ENV === "development";
+
 function pickBackground() {
     const bgs = [background1, background2, background3, background4];
-    const which = Math.floor(Math.random() * bgs.length);
+    const which = isDevelopment ? 3 : Math.floor(Math.random() * bgs.length);
     return bgs[which];
 }
 
@@ -26,22 +33,22 @@ for (const dependency of ["chrome", "node", "electron"]) {
 
 const versionText = `Powered by Node.js ${versions.node},
 Chromium ${versions.chrome}, and Electron ${versions.electron}.`;
+/** */
 
-type WelcomeScreenProps = Record<string,unknown>;
+type WelcomeScreenProps = PropsFromRedux & typeof WelcomeScreen.defaultProps;
+
 interface WelcomeScreenState {
     value: string
 }
 
 class WelcomeScreen extends Component<WelcomeScreenProps, WelcomeScreenState> {
-    constructor(props:  WelcomeScreenProps) {
-        super(props);
-        this.state = {
-            value: ""
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+    static defaultProps = {
+        currentSetting: {} as dnd.Setting
+    };
+    
+    state: WelcomeScreenState = {
+        value: ""
+    };
 
     handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         this.setState({ value: e.target.value });
@@ -52,26 +59,43 @@ class WelcomeScreen extends Component<WelcomeScreenProps, WelcomeScreenState> {
         e.preventDefault();
     };
 
+    hasCurrentSetting = (): boolean => {
+        const { currentSetting } = this.props;
+        return Object.keys(currentSetting).length > 0;
+    };
+
     render(): React.ReactNode {
         const { value } = this.state;
+        const { currentSetting } = this.props;
+        const showCurrentSetting = this.hasCurrentSetting();
         return (
             <Screen style={bgStyles}>
                 <div id="title-container">
                     <h1 id="welcome-title">DnD Campaign Booklet</h1>
                 </div>
-                <div id="new-setting-wrapper" className="flex-column">
-                    <form onSubmit={this.handleSubmit}>
-                        <input
-                            id="new-setting-input"
-                            name="new-setting"
-                            type="text"
-                            placeholder="Name your setting..."
-                            value={value}
-                            onChange={this.handleChange}
-                            autoFocus
-                        />
-                    </form>
-                </div>
+                <WaitForStartup>
+                    {showCurrentSetting
+                        ? (
+                            <div id="current-setting-wrapper"className="flex-column">
+                                {JSON.stringify(currentSetting)}
+                            </div>
+                        ) : (
+                            <div id="new-setting-wrapper" className="flex-column">
+                                <form onSubmit={this.handleSubmit}>
+                                    <input
+                                        id="new-setting-input"
+                                        name="new-setting"
+                                        type="text"
+                                        placeholder="Name your setting..."
+                                        value={value}
+                                        onChange={this.handleChange}
+                                        autoFocus
+                                    />
+                                </form>
+                            </div>
+                        )
+                    }
+                </WaitForStartup>
                 <div id="bottom-right-text" className="absolute flex-row">
                     <span>{versionText}</span>
                 </div>
@@ -80,4 +104,12 @@ class WelcomeScreen extends Component<WelcomeScreenProps, WelcomeScreenState> {
     }
 }
 
-export default WelcomeScreen;
+const mapStateToProps = (state: RootState) => ({
+    currentSetting: settingsSelectors.getCurrentSetting(state)
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(WelcomeScreen);

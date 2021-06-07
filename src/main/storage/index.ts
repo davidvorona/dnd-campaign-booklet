@@ -46,7 +46,7 @@ class Storage {
             this.data[keyStr] = val;
             fs.writeFileSync(this.path, JSON.stringify(this.data));
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     };
 }
@@ -62,7 +62,7 @@ function parseDataFile(path: string, defaults?: StorageDefaults) {
         }
         return JSON.parse(jsonData);
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return defaults;
     }
 }
