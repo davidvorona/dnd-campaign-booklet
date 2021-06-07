@@ -7,7 +7,7 @@ type WaitForStartupProps = PropsFromRedux & typeof defaultProps & {
     children: React.ReactNode
 };
 
-const WaitForStartup = (props: WaitForStartupProps) => {
+const WaitForStartup = (props: WaitForStartupProps): JSX.Element | null => {
     return props.isComplete ? <>{props.children}</> : null;
 };
 

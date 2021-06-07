@@ -4,6 +4,7 @@ import process from "process";
 import { RootState } from "../../state/store";
 import Screen from "../../components/screen";
 import WaitForStartup from "../../containers/wait_for_startup";
+import ViewBox from "../../components/view_box";
 import { selectors as settingsSelectors } from "../../state/redux/settings_redux";
 import background1 from "../../../../assets/images/FantasyBackground1.jpg";
 import background2 from "../../../../assets/images/FantasyBackground2.jpg";
@@ -12,11 +13,9 @@ import background4 from "../../../../assets/images/FantasyBackground4.jpg";
 import "./styles.css";
 
 /** Helpers */
-const isDevelopment = process.env.NODE_ENV === "development";
-
 function pickBackground() {
     const bgs = [background1, background2, background3, background4];
-    const which = isDevelopment ? 3 : Math.floor(Math.random() * bgs.length);
+    const which = Math.floor(Math.random() * bgs.length);
     return bgs[which];
 }
 
@@ -70,32 +69,38 @@ class WelcomeScreen extends Component<WelcomeScreenProps, WelcomeScreenState> {
         const showCurrentSetting = this.hasCurrentSetting();
         return (
             <Screen style={bgStyles}>
-                <div id="title-container">
-                    <h1 id="welcome-title">DnD Campaign Booklet</h1>
-                </div>
-                <WaitForStartup>
-                    {showCurrentSetting
-                        ? (
-                            <div id="current-setting-wrapper"className="flex-column">
-                                {JSON.stringify(currentSetting)}
+                {showCurrentSetting
+                    ? (
+                        <>
+                            <ViewBox>
+                                <div id="current-setting-wrapper" className="flex-column">
+                                    {JSON.stringify(currentSetting)}
+                                </div>
+                            </ViewBox>
+                        </>
+                    ) : (
+                        <>
+                            <div id="title-container">
+                                <h1 id="welcome-title">DnD Campaign Booklet</h1>
                             </div>
-                        ) : (
-                            <div id="new-setting-wrapper" className="flex-column">
-                                <form onSubmit={this.handleSubmit}>
-                                    <input
-                                        id="new-setting-input"
-                                        name="new-setting"
-                                        type="text"
-                                        placeholder="Name your setting..."
-                                        value={value}
-                                        onChange={this.handleChange}
-                                        autoFocus
-                                    />
-                                </form>
-                            </div>
-                        )
-                    }
-                </WaitForStartup>
+                            <WaitForStartup>
+                                <div id="new-setting-wrapper" className="flex-column">
+                                    <form onSubmit={this.handleSubmit}>
+                                        <input
+                                            id="new-setting-input"
+                                            name="new-setting"
+                                            type="text"
+                                            placeholder="Name your setting..."
+                                            value={value}
+                                            onChange={this.handleChange}
+                                            autoFocus
+                                        />
+                                    </form>
+                                </div>
+                            </WaitForStartup>
+                        </>
+                    )
+                }
                 <div id="bottom-right-text" className="absolute flex-row">
                     <span>{versionText}</span>
                 </div>
