@@ -71,17 +71,18 @@ class WelcomeScreen extends Component<WelcomeScreenProps, WelcomeScreenState> {
             <Screen style={bgStyles}>
                 {showCurrentSetting
                     ? (
-                        <>
+                        <div className="view-box-container">
                             <ViewBox>
                                 <div id="current-setting-wrapper" className="flex-column">
-                                    {JSON.stringify(currentSetting)}
+                                    <div id="setting-name">{currentSetting.name}</div>
+                                    <div>{currentSetting.createDate}</div>
                                 </div>
                             </ViewBox>
-                        </>
+                        </div>
                     ) : (
                         <>
                             <div id="title-container">
-                                <h1 id="welcome-title">DnD Campaign Booklet</h1>
+                                <h1 id="welcome-title">The Trove</h1>
                             </div>
                             <WaitForStartup>
                                 <div id="new-setting-wrapper" className="flex-column">

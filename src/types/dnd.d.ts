@@ -13,7 +13,8 @@ declare namespace dnd {
             intelligence: number,
             wisdom: number,
             charisma: number
-        }
+        },
+        description: string
     }
     
     interface PlayerCharacter extends Character {
@@ -27,17 +28,20 @@ declare namespace dnd {
         [key: string]: unknown,
 
         type: string,
-        name: string
+        name: string,
+        description: string
     }
     
     interface Setting {
         [key: string]: unknown,
 
-        name: string,
         createDate: string,
-        location?: string,
-        pcs: PlayerCharacter[],
-        npcs: Character[],
-        locations: Location[]
+        setupStep?: number,
+
+        name: string,
+        magicLevel?: number,
+        pcs?: PlayerCharacter[],
+        npcs?: Character[],
+        locations?: Location[]
     }
 }

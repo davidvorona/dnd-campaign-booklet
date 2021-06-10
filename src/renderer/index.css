@@ -26,3 +26,9 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+.view-box-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}

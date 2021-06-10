@@ -16,6 +16,12 @@
 #current-setting-wrapper {
     justify-content: center;
     align-items: center;
+    margin: 2.5%;
+}
+
+#setting-name {
+    font-size: 32px;
+    font-weight: bold;
 }
 
 #new-setting-input {
@@ -36,7 +42,7 @@
 #bottom-right-text {
     bottom: 0;
     right: 0;
-    padding-bottom: 10px;
-    padding-right: 10px;
+    padding-bottom: 5px;
+    padding-right: 5px;
     align-items: center;
 }
